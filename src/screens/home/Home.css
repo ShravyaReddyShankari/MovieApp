@@ -1,0 +1,21 @@
+.header {
+    background-color: #ff9999;
+    padding: 8px 8px 8px 8px;
+}
+
+h1 {
+    text-align: center;
+    font-size: 1rem;
+}
+
+.releasedMovies {
+    display: flex;
+    width: 76%;
+    margin: 16px;
+}
+
+.filters {
+    display: flex;
+    width: 24%;
+    margin: 16px;
+}

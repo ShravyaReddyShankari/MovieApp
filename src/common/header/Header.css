@@ -20,5 +20,6 @@ img {
     }
   }
 
-
-  
+Button {
+    text-align: right;
+}
