@@ -1,41 +1,91 @@
+import React, {useState} from 'react';
 import { ValidatorForm } from 'react-material-ui-form-validator';
 import TextValidator from 'react-material-ui-form-validator/lib/TextValidator';
+import Button from '@material-ui/core/Button';
+
 const Register = () => {
+    const [registerUserForm, setregisterUserForm] = useState({
+        id: 0,
+        email_address: "",
+        first_name: "",
+        last_name: "",
+        mobile_number: "",
+        password: ""
+      });
+
+    const {email_address, first_name, last_name, mobile_number, password} = registerUserForm;
+
+    //const history = useHistory();
+
+    const inputChangedHandler = (e) => {
+        const state = registerUserForm;
+        console.log(e.target.value);
+        state[e.target.name] = e.target.value;
+        // setregisterUserForm({
+        //     first_name: state["first_name"],
+        //     last_name: state["last_name"],
+        //     mobile_number: state["mobile_number"],
+        //     password: state["password"],
+        //     email_address: state["email_address"]
+        // });
+        setregisterUserForm({...state});
+    }
+    async function registerUserHandler(newUser) {
+        const rawResponse = await fetch("/api/v1/signup", 
+        {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+            "Cache-Control": "no-cache"
+        },
+        body: JSON.stringify(newUser)
+        });
+        const data = await rawResponse.json();
+        console.log(data);
+    }
+
+    const onFormSubmitted = (e) => {
+        e.preventDefault();
+        registerUserHandler(registerUserForm);
+        //setregisterUserForm({id: 0, name: '', phone: ''});
+        //history.push("/");
+    }
+
     return (
         <div className="component-body-container">
             {/* <Link to="/"><button className="custom-btn">Back</button></Link> */}
             <ValidatorForm className="register-form" onSubmit={onFormSubmitted}>
                 <TextValidator
-                    id="firstName" 
+                    id="first_name" 
                     label="First Name" 
                     type="text" 
-                    name="firstName" 
-                    //onChange={inputChangedHandler} 
-                    //value={name}
+                    name="first_name" 
+                    onChange={inputChangedHandler} 
+                    value={first_name}
                     validators={["required"]}
                     errorMessages={["required"]}
                 >
                 </TextValidator>
                 <br /><br />
                 <TextValidator
-                    id="lastName" 
+                    id="last_name" 
                     label="Last Name" 
                     type="text" 
-                    name="lastName" 
-                    //onChange={inputChangedHandler} 
-                    //value={name}
+                    name="last_name" 
+                    onChange={inputChangedHandler} 
+                    value={last_name}
                     validators={["required"]}
                     errorMessages={["required"]}
                 >
                 </TextValidator>
                 <br /><br />
                 <TextValidator
-                    id="email" 
+                    id="email_address" 
                     label="Email" 
                     type="text" 
-                    name="email" 
-                    //onChange={inputChangedHandler} 
-                    //value={name}
+                    name="email_address" 
+                    onChange={inputChangedHandler} 
+                    value={email_address}
                     validators={["required"]}
                     errorMessages={["required"]}
                 >
@@ -46,27 +96,32 @@ const Register = () => {
                     label="Password" 
                     type="text" 
                     name="password" 
-                    //onChange={inputChangedHandler} 
-                    //value={name}
+                    onChange={inputChangedHandler} 
+                    value={password}
                     validators={["required"]}
                     errorMessages={["required"]}
                 >
                 </TextValidator>
                 <br /><br />
                 <TextValidator
-                    id="contactNo" 
+                    id="mobile_number" 
                     label="Contact No." 
                     type="text" 
-                    name="contactNo" 
-                    //onChange={inputChangedHandler} 
-                    //value={name}
+                    name="mobile_number" 
+                    onChange={inputChangedHandler} 
+                    value={mobile_number}
                     validators={["required"]}
                     errorMessages={["required"]}
                 >
                 </TextValidator>
                 <br /><br />
                 <button type="submit" className="custom-btn add-btn">REGISTER</button>
+                {/* <Button variant="contained" color="primary">
+                    REGISTER
+                </Button> */}
             </ValidatorForm>
         </div>
     )
 }
+
+export default Register;

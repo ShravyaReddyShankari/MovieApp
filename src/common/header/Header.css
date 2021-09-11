@@ -1,14 +1,13 @@
 .header {
     background-color: #222;
     height: 36px;
-    padding: 8px 8px 8px 16px;
+    padding: 8px 32px 8px 16px;
 }
 
-img {
+.logo {
     background-color: #ff7f7f;
     height: 35px;
     animation: rotation 8s infinite linear;
-    text-align: left;
 }
 
 @keyframes rotation {
@@ -20,6 +19,6 @@ img {
     }
   }
 
-Button {
-    text-align: right;
+.headerButton {
+    float: right;
 }

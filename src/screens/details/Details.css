@@ -1,0 +1,22 @@
+.backToHome {
+    margin-left: 24px;
+    margin-top: 8px;
+    margin-bottom: 0px;
+    height: 24px;
+}
+
+.moviePoster {
+    display: flex;
+    width: 20%;
+}
+
+.movieDetails {
+    display: flex;
+    width: 60%;
+}
+
+.movieRating {
+    display: flex;
+    width: 20%;
+}
+
