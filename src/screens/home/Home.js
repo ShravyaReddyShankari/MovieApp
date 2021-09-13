@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
     root: {
       minWidth: 240,
       maxWidth: 240,
-      margin: theme.spacing.unit
+      //margin: theme.spacing.unit
     },
     bullet: {
       display: 'inline-block',
@@ -313,6 +313,13 @@ const Home = (props) => {
       });
     }
 
+    const getReleaseDateString = (movie) => {
+      let releaseDateString = movie.release_date;
+      const releaseDateArr = releaseDateString.split("-");
+      const date = new Date(releaseDateArr[0], releaseDateArr[1], releaseDateArr[2]);
+      return date.toDateString();
+    }
+
         return (
         <div>
             <Header />
@@ -344,7 +351,7 @@ const Home = (props) => {
             </div>
             <div className="movieFilters">
             <div className="releasedMovies">
-            <ImageList cols={4} rowHeight={350} style={{ height: 'auto' }}>
+            <ImageList cols={4} rowHeight={350} style={{'height':'auto'}}>
                     {releasedMoviesList.map((movie) => (
                     <ImageListItem key={movie.id}>
                         <Link to={"/movie/"+movie.id}>
@@ -353,15 +360,16 @@ const Home = (props) => {
                         {/* onClick={movieClickHandler(movie.id)} */}
                         <ImageListItemBar
                         title={movie.title}
+                        //subtitle={getReleaseDateString}
                         // classes={{
                         //     root: classes.titleBar,
                         //     title: classes.title,
                         // }}
-                        actionIcon={
-                            <IconButton aria-label={`star ${movie.title}`}>
-                            <StarBorderIcon className={classes.title}/>
-                            </IconButton>
-                        }
+                        // actionIcon={
+                        //     <IconButton aria-label={`star ${movie.title}`}>
+                        //     <StarBorderIcon className={classes.title}/>
+                        //     </IconButton>
+                        // }
                         />
                     </ImageListItem>
                     ))}
@@ -439,14 +447,15 @@ const Home = (props) => {
                 </FormControl>
                 <br /><br />
                 <FormControl>
-                  <InputLabel htmlFor="releaseStartDate">Release Date Start</InputLabel>
-                  <Input id="releaseStartDate" type="date" value={releaseStartDate} onChange={handleReleaseStartDateChange} ></Input>
-                  <TextField InputLabelProps={{ shrink: true }} />
+                  {/* <InputLabel htmlFor="releaseStartDate">Release Date Start</InputLabel> */}
+                  <TextField label="Release Date Start" id="releaseStartDate" type="date" InputLabelProps={{ shrink: true }} />
+                  {/* <Input id="releaseStartDate" type="date" value={releaseStartDate} onChange={handleReleaseStartDateChange} ></Input> */}
                 </FormControl>
                 <br /><br />
                 <FormControl>
-                  <InputLabel htmlFor="releaseEndDate">Release Date End</InputLabel>
-                  <Input id="releaseEndDate" type="date" value={releaseEndDate} onChange={handleReleaseEndDateChange} ></Input>
+                  {/* <InputLabel htmlFor="releaseEndDate">Release Date End</InputLabel> */}
+                  <TextField label="Release Date End" id="releaseEndDate" type="date" InputLabelProps={{ shrink: true }} />
+                  {/* <Input id="releaseEndDate" type="date" value={releaseEndDate} onChange={handleReleaseEndDateChange} ></Input> */}
                   <TextField InputLabelProps={{ shrink: true }} />
                 </FormControl>
                 <br /><br />

@@ -3,7 +3,7 @@ import { ValidatorForm } from 'react-material-ui-form-validator';
 import TextValidator from 'react-material-ui-form-validator/lib/TextValidator';
 import Button from '@material-ui/core/Button';
 
-const Register = () => {
+const Register = (props) => {
     const [registerUserForm, setregisterUserForm] = useState({
         id: 0,
         email_address: "",
@@ -47,6 +47,8 @@ const Register = () => {
     const onFormSubmitted = (e) => {
         e.preventDefault();
         registerUserHandler(registerUserForm);
+        const modalIsOpenVar = false;
+        props.onChange(e, modalIsOpenVar);
         //setregisterUserForm({id: 0, name: '', phone: ''});
         //history.push("/");
     }

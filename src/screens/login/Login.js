@@ -4,7 +4,7 @@ import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
 
-const Login = () => {
+const Login = (props) => {
     const [loginUserForm, setLoginUserForm] = useState({
         username: "",
         password: ""
@@ -43,6 +43,8 @@ const Login = () => {
             if(rawResponse.ok) {
                 window.sessionStorage.setItem('user-details', JSON.stringify(result));
                 window.sessionStorage.setItem('access-token', rawResponse.headers.get('access-token'));
+                const modalIsOpenVar = false;
+                props.onChange(e, modalIsOpenVar);
                 //window.location.href = './boards.html';
             } else {
                 const error = new Error();
@@ -57,14 +59,14 @@ const Login = () => {
         <div>
             <FormControl>
             <InputLabel htmlFor="username">Username</InputLabel>
-            <Input id="username" name="username" value={username} onChange={inputChangedHandler}required="true"></Input>
+            <Input id="username" name="username" value={username} onChange={inputChangedHandler} required></Input>
             {/* <Input id="username" aria-describedby="my-helper-text" /> */}
             {/* <FormHelperText id="my-helper-text">We'll never share your email.</FormHelperText> */}
             </FormControl>
             <br /><br />
             <FormControl>
             <InputLabel htmlFor="password">Password</InputLabel>
-            <Input id="password" name="password" value={password} onChange={inputChangedHandler} required="true"></Input>
+            <Input id="password" name="password" value={password} onChange={inputChangedHandler} required></Input>
             {/* <Input id="username" aria-describedby="my-helper-text" /> */}
             {/* <FormHelperText id="my-helper-text">We'll never share your email.</FormHelperText> */}
             </FormControl>

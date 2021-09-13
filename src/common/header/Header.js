@@ -13,8 +13,9 @@ import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 // import Box from "@material-ui/core/Box";
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import logo from '../../assets/logo.svg';
+import './Header.css';
 
 const customStyles = {
     content: {
@@ -40,6 +41,13 @@ Modal.setAppElement('body')
 
 const Header = (props) => {
     const [modalIsOpen, setIsOpen] = React.useState(false);
+    const isLoggedIn = window.sessionStorage.getItem('access-token') != undefined ? true : false;
+    let isShowBookShowButton = false;
+    let movieId = '';
+    if(props.isShowBookShowButton) {
+        isShowBookShowButton = props.isShowBookShowButton;
+        movieId = props.movieId;
+    }
 
     function openModal() {
         setIsOpen(true);
@@ -54,9 +62,15 @@ const Header = (props) => {
     function closeModal() {
         setIsOpen(false);
     }
+
+    const history = useHistory();
+
     const bookShowButtonClickHandler = () => {
-        if(this.state.isLoggedIn) {
+        if(isLoggedIn) {
             //navigate to book show screen
+            history.push({
+                pathname: "/bookshow/" + movieId
+            });
         }
         else {
             alert("Please Login or Register");
@@ -67,6 +81,17 @@ const Header = (props) => {
     const handleChange = (event, newValue) => {
     setValue(newValue);
     };
+
+    const handleModalOpenChange = (e, modalIsOpen) => {
+        setIsOpen(modalIsOpen);
+    }
+    
+    const logoutHandler = () => {
+        window.sessionStorage.removeItem('access-token');
+        window.sessionStorage.removeItem('user-details');
+        history.push("/");
+    }
+
 
     return (
         <div className="header">
@@ -81,13 +106,8 @@ const Header = (props) => {
             {/* <ReactLogo /> */}
             {/* <img src="../../assets/logo.svg" onerror="this.src='../../assets/logo.svg'"></img> */}
              {/* <img src="../../assets/logo.svg"></img> */}
-             <Link to="/bookshow/:id"><Button className="headerButton" variant="contained" color="primary">
-                BOOK SHOW 
-            </Button>
-            </Link>
-            {/*(this.state.isLoggedIn) ? ( <Button variant="contained">LOGOUT</Button> ) : 
-            ( */}
-            <Button className="headerButton" variant="contained" onClick={openModal}>LOGIN</Button> 
+            {isLoggedIn ? ( <Button className="headerButton" variant="contained" onClick={logoutHandler}>LOGOUT</Button> ) : 
+            ( <Button className="headerButton" variant="contained" onClick={openModal}>LOGIN</Button> )}
             <Modal
                 isOpen={modalIsOpen}
                 onAfterOpen={afterOpenModal}
@@ -114,14 +134,20 @@ const Header = (props) => {
                         </Tab>
                     </Tabs>
                     <TabPanel value={value} index={0}>
-                        <Login />
+                        <Login modalIsOpen={modalIsOpen} onChange={handleModalOpenChange}/>
                     </TabPanel>
                     <TabPanel value={value} index={1}>
-                        <Register />
+                        <Register modalIsOpen={modalIsOpen} onChange={handleModalOpenChange}/>
                     </TabPanel>
                 </Paper>
             </Modal>
-            {/* )  */}
+            {isShowBookShowButton ? (
+            // <Link to={"/bookshow/" + movieId}>
+            <Button className="headerButton" variant="contained" color="primary" onClick={bookShowButtonClickHandler}>
+                BOOK SHOW 
+            </Button>
+            // </Link>
+            ) : ''}
         </div>
     )
 }

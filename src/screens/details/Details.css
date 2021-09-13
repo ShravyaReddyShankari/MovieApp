@@ -5,18 +5,20 @@
     height: 24px;
 }
 
-.moviePoster {
+.movieInfo {
     display: flex;
+    flex-direction: row;
+}
+
+.moviePoster {
     width: 20%;
 }
 
 .movieDetails {
-    display: flex;
     width: 60%;
 }
 
 .movieRating {
-    display: flex;
     width: 20%;
 }
 
