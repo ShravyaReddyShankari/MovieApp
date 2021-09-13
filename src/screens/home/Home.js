@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import Header from '../../common/header/Header';
 //import { GridListTile } from '@material-ui/core';
-import ImageList from '@mui/material/ImageList';
-import ImageListItem from '@mui/material/ImageListItem';
-import ImageListItemBar from '@mui/material/ImageListItemBar';
-import IconButton from '@material-ui/core/IconButton';
-import StarBorderIcon from '@material-ui/icons/StarBorder';
-import { makeStyles } from '@material-ui/styles';
+import ImageList from "@material-ui/core/ImageList";
+import ImageListItem from "@material-ui/core/ImageListItem";
+import ImageListItemBar from "@material-ui/core/ImageListItemBar";
+import IconButton from "@material-ui/core/IconButton";
+import StarBorderIcon from "@material-ui/icons/StarBorder";
+import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import { CardContent } from '@material-ui/core';
+import { CardContent, FormControlLabel } from '@material-ui/core';
 import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
@@ -20,6 +20,12 @@ import { MenuItem } from '@material-ui/core';
 import Checkbox from '@material-ui/core/Checkbox';
 import { TextField } from '@material-ui/core';
 import './Home.css';
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import { MovieCreation } from '@material-ui/icons';
+import { Link } from 'react-router-dom';
+
+
 
 
 
@@ -30,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     flexWrap: "wrap",
     justifyContent: "space-around",
     overflow: "hidden",
-    //backgroundColor: theme.palette.background.paper
+    backgroundColor: theme.palette.background.paper
   },
   imageList: {
     flexWrap: "nowrap",
@@ -38,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     transform: "translateZ(0)"
   },
   title: {
-    //color: theme.palette.primary.light
+    color: theme.palette.primary.light
   },
   titleBar: {
     background:
@@ -50,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
     root: {
       minWidth: 240,
       maxWidth: 240,
-      //margin: theme.spacing.unit
+      margin: theme.spacing.unit
     },
     bullet: {
       display: 'inline-block',
@@ -59,22 +65,34 @@ const useStyles = makeStyles((theme) => ({
     },
     title: {
       fontSize: 14,
+      color: theme.palette.primary.light
     },
     pos: {
       marginBottom: 12,
     },
+    formControl: {
+      margin: theme.spacing(1),
+      minWidth: 120,
+    },
   }));
 
-const Home = () => {
+const Home = (props) => {
     const classes = useStyles();
     const classesFilter = useStylesFilter();
 
     const [moviesList, setMoviesList] = useState([]);
-    // const [genresList, setGenresList] = useState([]);
-    // const [artistsList, setArtistsList] = useState([]);
+    const [publishedMoviesList, setPublishedMoviesList] = useState([]);
+    const [releasedMoviesList, setReleasedMoviesList] = useState([]);
+    const [genreData, setGenreData] = useState([]);
+    const [artistData, setArtistData] = useState([]);
+    const [movieName, setMovieName] = useState('');
+    const [genres, setGenres] = useState([]);
+    const [artists, setArtists] = useState([]);
+    const [releaseStartDate, setReleaseStartDate] = useState('');
+    const [releaseEndDate, setReleaseEndDate] = useState('');
 
-    let genreData = [{}];//this.state; //.genre;
-    let artistData = [{}];//this.state; //.artist;
+    //let genreData = [{}];//this.state; //.genre;
+    //let artistData = [{}];//this.state; //.artist;
 
     async function loadMoviesData() {
         const rawResponse = await fetch("/api/v1/movies?limit=20");
@@ -86,7 +104,8 @@ const Home = () => {
       const rawResponse = await fetch("/api/v1/genres");
       const data = await rawResponse.json();
       //setGenresList(data["genres"]);
-      genreData = data["genres"];
+      //genreData = data["genres"];
+      setGenreData(data["genres"]);
       console.log(genreData);
   }
 
@@ -94,17 +113,205 @@ const Home = () => {
       const rawResponse = await fetch("/api/v1/artists?limit=20");
       const data = await rawResponse.json();
       //setArtistsList(data["artists"]);
-      artistData = data["artists"];
+      //artistData = data["artists"];
+      setArtistData(data["artists"]);
       console.log(artistData);
   }
     useEffect(() => {
-        loadMoviesData();
-        loadGenresData();
-        loadArtistsData();
+        // loadMoviesData().then(
+        // loadGenresData().then(
+        // loadArtistsData()));
+        fetch("/api/v1/movies?limit=20")
+        .then(result => result.json())
+        .then(data => { setMoviesList(data["movies"]); 
+                        setPublishedMoviesList(data["movies"].filter(m => m["status"] === "PUBLISHED"));
+                        setReleasedMoviesList(data["movies"].filter(m => m["status"] === "RELEASED"));
+        })
+        .then(d => {
+          // let publishedMoviesList = moviesList.filter(m => m["status"] === "PUBLISHED");
+          // setPublishedMoviesList(publishedMoviesList);
+          // let releasedMoviesList = moviesList.filter(m => m["status"] === "RELEASED");
+          // setReleasedMoviesList(releasedMoviesList);
+          fetch("/api/v1/genres")
+          .then(result => result.json())
+          .then(data => setGenreData(data["genres"]))
+          .then(d => {
+            fetch("/api/v1/artists?limit=20")
+            .then(result => result.json())
+            .then(data => setArtistData(data["artists"]))
+        })
+      })
     },[])
 
-    const publishedMoviesList = moviesList.filter(m => m["status"] === "PUBLISHED");
-    const releasedMoviesList = moviesList.filter(m => m["status"] === "RELEASED");
+    // let publishedMovies = moviesList.filter(m => m["status"] === "PUBLISHED");
+    // setPublishedMoviesList(publishedMovies);
+    // let releasedMovies = moviesList.filter(m => m["status"] === "RELEASED");
+    // setReleasedMoviesList(releasedMovies);
+    // setPublishedMoviesList(moviesList.filter(m => m["status"] === "PUBLISHED"));
+    // setReleasedMoviesList(moviesList.filter(m => m["status"] === "RELEASED"));
+
+    // const handleGenreChange = (event) => {
+    //   setGenre(event.target.value);
+    // };
+
+    // const handleArtistChange = (event) => {
+    //   setArtist(event.target.value);
+    // };
+
+    const handleMovieNameChange = (event) => {
+      const value = event.target.value;
+      setMovieName(value);
+    }
+
+    const handleGenresChangeMultiple = (event) => {
+      // const { options } = event.target;
+      // const value = [];
+      // for (let i = 0, l = options.length; i < l; i += 1) {
+      //   if (options[i].selected) {
+      //     value.push(options[i].value);
+      //   }
+      // }
+      // setGenres(value);
+      const value = event.target.value;
+      console.log(value);
+      //const genresList = genres;
+      //genresList.push(value);
+      setGenres(value);
+      console.log(genres);
+    };
+
+    const handleArtistsChangeMultiple = (event) => {
+      // const { options } = event.target;
+      // const value = [];
+      // for (let i = 0, l = options.length; i < l; i += 1) {
+      //   if (options[i].selected) {
+      //     value.push(options[i].value);
+      //   }
+      // }
+      // setArtists(value);
+      const value = event.target.value;
+      //const artistsList = artists;
+      //artistsList.push(value);
+      setArtists(value);
+    };
+
+    const handleReleaseStartDateChange = (event) => {
+      const value = event.target.value;
+      setReleaseStartDate(value);
+    }
+
+    const handleReleaseEndDateChange = (event) => {
+      const value = event.target.value;
+      setReleaseEndDate(value);
+    }
+
+    const applyFiltersHandler = (event) => {
+      //event.preventDefault();
+      let movieFilterData = [];
+      if(movieName != '') {
+        movieFilterData = releasedMoviesList.filter((movie) => movie.title.toUpperCase().includes(movieName.toUpperCase()));
+        //movie.title.toUpperCase().includes(movieName.toUpperCase())
+      }
+      if(genres.length > 0) {
+        //let genreNames = [];
+        // for(let i=0;i<genres.length;i++) {
+        //   genreNames.push(genres[i].genre);
+        // }
+        if(movieFilterData.length > 0) {
+          for(let i=0;i<genres.length;i++) {
+            movieFilterData = movieFilterData.filter((movie) => movie.genres.includes(genres[i].genre));
+          }
+        }
+        else {
+          for(let i=0;i<genres.length;i++) {
+            movieFilterData = releasedMoviesList.filter((movie) => movie.genres.includes(genres[i].genre)); 
+          }
+        }
+      }
+      if(artists.length > 0) {
+        if(movieFilterData.length > 0) {
+          // let artistIds = [];
+          // for(let i=0;i<movieFilterData.length;i++) {
+          //   if(movieFilterData[i].artists != null) {
+          //     for(let j=0;j<movieFilterData[i].artists.length;j++) {
+          //       artistIds.push(movieFilterData[i].artists[j].id);
+          //     }
+          //   }
+          // }
+          //let movieArtistsFilterData = [];
+            for(var j=0;j<movieFilterData.length;j++) {
+              if(movieFilterData[j].artists != null) {
+                var artistObjects = movieFilterData[j].artists;
+                //var c = 0;
+                for(var k=0;k<artistObjects.length;k++) {
+                  for(var i=0;i<artists.length;i++) {
+                    if(artistObjects[k].id == artists[i].id) {
+                      //movieArtistsFilterData.push(movieFilterData[j]);
+                      c++;
+                    }
+                  }
+                }
+                if(c == 0) {
+                  movieFilterData.splice(j, 1);
+                }
+              }
+            //movieFilterData = movieFilterData.filter((movie) => artistIds.includes(artists[i].id));
+          }
+        }
+        else { 
+          // let artistIds = [];
+          // for(let i=0;i<moviesList.length;i++) {
+          //   if(moviesList[i].artists != null) {
+          //     for(let j=0;j<moviesList[i].artists.length;j++) {
+          //       artistIds.push(moviesList[i].artists[j].id);
+          //     }
+          //   }
+          // }
+          for(var j=0;j<releasedMoviesList.length;j++) {
+            if(releasedMoviesList[j].artists != null) {
+              var artistObjects = releasedMoviesList[j].artists;
+              var c = 0;
+              for(var k=0;k<artistObjects.length;k++) {
+                for(var i=0;i<artists.length;i++) {
+                  if(artistObjects[k].id == artists[i].id) {
+                    //movieArtistsFilterData.push(movieFilterData[j]);
+                    //c++;
+                    movieFilterData.push(releasedMoviesList[j]);
+                    //break;
+                  }
+                }
+              }
+              // if(c == 0) {
+              //   movieFilterData = moviesList.splice(j, 1);
+              // }
+            }
+          //movieFilterData = movieList.filter((movie) => artistIds.includes(artists[i].id));
+        }
+      }
+        }
+      if(releaseStartDate != '' && releaseEndDate != '') {
+        console.log(Date.parse(releaseStartDate));
+        if(movieFilterData.length > 0) {
+          movieFilterData = movieFilterData.filter((movie) => Date.parse(movie.release_date) >= Date.parse(releaseStartDate) && Date.parse(movie.release_date) <= Date.parse(releaseEndDate));
+        }
+        else {
+          movieFilterData = releasedMoviesList.filter((movie) => Date.parse(movie.release_date) >= Date.parse(releaseStartDate) && Date.parse(movie.release_date) <= Date.parse(releaseEndDate));
+        }
+      }
+      console.log(movieFilterData);
+      //setMoviesList(movieFilterData);
+      //console.log(moviesList);
+      //console.log(publishedMoviesList);
+      //releasedMoviesList = {...movieFilterData};
+      setReleasedMoviesList(movieFilterData);
+      console.log(releasedMoviesList);
+    }
+
+    const movieClickHandler = (id) => {
+      props.history.push({
+        pathname: "/movie/" + id
+      });
+    }
 
         return (
         <div>
@@ -118,6 +325,7 @@ const Home = () => {
                 publishedMoviesList.map((movie) => (
                   <ImageListItem key={movie.id}>
                     <img src={movie.poster_url} alt={movie.title} />
+                    {/* onClick={movieClickHandler(movie.id)} */}
                     <ImageListItemBar
                       title={movie.title}
                       classes={{
@@ -139,7 +347,10 @@ const Home = () => {
             <ImageList cols={4} rowHeight={350} style={{ height: 'auto' }}>
                     {releasedMoviesList.map((movie) => (
                     <ImageListItem key={movie.id}>
+                        <Link to={"/movie/"+movie.id}>
                         <img src={movie.poster_url} alt={movie.title} />
+                        </Link>
+                        {/* onClick={movieClickHandler(movie.id)} */}
                         <ImageListItemBar
                         title={movie.title}
                         // classes={{
@@ -160,48 +371,67 @@ const Home = () => {
             <Card>
               <CardContent>
                 <Typography className={classesFilter.title} gutterBottom>
-                {/* color={theme.palette.primary.light} */}
                   FIND MOVIES BY:
                 </Typography>
                 <FormControl>
                   <InputLabel htmlFor="movieName">Movie Name</InputLabel>
-                  <Input id="movieName"></Input>
+                  <Input id="movieName" value={movieName} onChange={handleMovieNameChange}></Input>
                 </FormControl>
                 <br /><br />
-                <FormControl>
+                <FormControl className={classesFilter.formControl}>
                   <InputLabel htmlFor="genres">Genres</InputLabel>
                   <Select
-                    //labelId="demo-controlled-open-select-label"
-                    id="genres"
+                    labelId="genres-select-label"
+                    //id="genres"
                     // open={open}
                     // onClose={handleClose}
                     // onOpen={handleOpen}
-                    // value={age}
-                    // onChange={handleChange}
+                    multiple
+                    value={genres}
+                    onChange={handleGenresChangeMultiple}
+                    renderValue={(genres) => (genres.map((genre) => genre.description + ", "))}
                   >
                     {genreData.map((data) => (
-                      <MenuItem value={data}>
-                      <Checkbox name={data.genre} />
-                      {/* onChange={handleChange} */}
-                    </MenuItem>
-                    ))}
+                      <MenuItem key={data.id} value={data}>
+                        <ListItemIcon>
+                          <Checkbox checked={genres.indexOf(data) > -1} />
+                        </ListItemIcon>
+                        <ListItemText primary={data.description} />
+                      {/* <FormControlLabel
+                      control = {<Checkbox value={data.genre} />}
+                      label = {data.description}
+                      /> */}
+                     </MenuItem> 
+                     ))} 
+                    {/* <MenuItem value={10}>Ten</MenuItem>
+                    <MenuItem value={20}>Twenty</MenuItem>
+                    <MenuItem value={30}>Thirty</MenuItem> */}
                   </Select>
                 </FormControl>
                 <br /><br />
-                <FormControl>
+                <FormControl className={classesFilter.formControl}>
                   <InputLabel htmlFor="artists">Artists</InputLabel>
                   <Select
-                    //labelId="demo-controlled-open-select-label"
-                    id="artists"
+                    labelId="artists-select-label"
+                    //id="artists"
                     // open={open}
                     // onClose={handleClose}
                     // onOpen={handleOpen}
-                    // value={age}
-                    // onChange={handleChange}
+                    multiple
+                    value={artists}
+                    onChange={handleArtistsChangeMultiple}
+                    renderValue={(artists) => (artists.map((artist) => artist.first_name + " " + artist.last_name + ", "))}
                   >
                     {artistData.map((artist) => (
-                      <MenuItem value={artist}>
-                      <Checkbox name={artist.fisrt_name +' '+ artist.last_name} />
+                      <MenuItem key={artist.id} value={artist}>
+                        <ListItemIcon>
+                          <Checkbox checked={artists.indexOf(artist) > -1} />
+                        </ListItemIcon>
+                        <ListItemText primary={artist.first_name +' '+ artist.last_name} />
+                      {/* <FormControlLabel
+                      control = { <Checkbox value={artist.first_name +' '+ artist.last_name} /> }
+                      label = {artist.first_name +' '+ artist.last_name}
+                      /> */}
                       {/* onChange={handleChange} */}
                     </MenuItem>
                     ))}
@@ -210,19 +440,19 @@ const Home = () => {
                 <br /><br />
                 <FormControl>
                   <InputLabel htmlFor="releaseStartDate">Release Date Start</InputLabel>
-                  <Input id="releaseStartDate" type="date" ></Input>
+                  <Input id="releaseStartDate" type="date" value={releaseStartDate} onChange={handleReleaseStartDateChange} ></Input>
                   <TextField InputLabelProps={{ shrink: true }} />
                 </FormControl>
                 <br /><br />
                 <FormControl>
                   <InputLabel htmlFor="releaseEndDate">Release Date End</InputLabel>
-                  <Input id="releaseEndDate" type="date" ></Input>
+                  <Input id="releaseEndDate" type="date" value={releaseEndDate} onChange={handleReleaseEndDateChange} ></Input>
                   <TextField InputLabelProps={{ shrink: true }} />
                 </FormControl>
                 <br /><br />
               </CardContent>
               <CardActions>
-                <Button variant="contained" color="primary">APPLY</Button>
+                <Button variant="contained" color="primary" onClick={applyFiltersHandler}>APPLY</Button>
               </CardActions>
             </Card>
             </div>

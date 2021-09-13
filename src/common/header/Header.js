@@ -14,6 +14,7 @@ import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 // import Box from "@material-ui/core/Box";
 import { Link } from 'react-router-dom';
+import logo from '../../assets/logo.svg';
 
 const customStyles = {
     content: {
@@ -37,7 +38,7 @@ const customStyles = {
 
 Modal.setAppElement('body')
 
-const Header = () => {
+const Header = (props) => {
     const [modalIsOpen, setIsOpen] = React.useState(false);
 
     function openModal() {
@@ -69,12 +70,13 @@ const Header = () => {
 
     return (
         <div className="header">
-            <svg className="logo" xmlns="http://www.w3.org/2000/svg"
+            <img className="logo" src={logo} />
+            {/* <svg className="logo" xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 512 512" enableBackground="new 0 0 512 512">
             <path d="M352,255.5l-192,96v-192L352,255.5z M512,31.5v448H0v-448H512z M320,95.5h64v-32h-64V95.5z M224,95.5h64v-32h-64V95.5z
             M128,95.5h64v-32h-64V95.5z M32,95.5h64v-32H32V95.5z M96,415.5H32v32h64V415.5z M192,415.5h-64v32h64V415.5z M288,415.5h-64v32h64
             V415.5z M384,415.5h-64v32h64V415.5z M480,415.5h-64v32h64V415.5z M480,127.5H32v256h448V127.5z M480,63.5h-64v32h64V63.5z"/>
-            </svg>
+            </svg> */}
             {/* <Image1 /> */}
             {/* <ReactLogo /> */}
             {/* <img src="../../assets/logo.svg" onerror="this.src='../../assets/logo.svg'"></img> */}
