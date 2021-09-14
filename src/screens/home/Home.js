@@ -238,25 +238,28 @@ const Home = (props) => {
           //     }
           //   }
           // }
-          //let movieArtistsFilterData = [];
+          let movieArtistsFilterData = [];
             for(var j=0;j<movieFilterData.length;j++) {
               if(movieFilterData[j].artists != null) {
                 var artistObjects = movieFilterData[j].artists;
-                //var c = 0;
+                var c = 0;
                 for(var k=0;k<artistObjects.length;k++) {
                   for(var i=0;i<artists.length;i++) {
                     if(artistObjects[k].id == artists[i].id) {
                       //movieArtistsFilterData.push(movieFilterData[j]);
                       c++;
+                      break;
                     }
                   }
                 }
-                if(c == 0) {
-                  movieFilterData.splice(j, 1);
+                if(c != 0) {
+                  movieArtistsFilterData.push(movieFilterData[j]);
+                  //movieFilterData.splice(j, 1);
                 }
               }
             //movieFilterData = movieFilterData.filter((movie) => artistIds.includes(artists[i].id));
           }
+          movieFilterData = movieArtistsFilterData;
         }
         else { 
           // let artistIds = [];
@@ -274,16 +277,15 @@ const Home = (props) => {
               for(var k=0;k<artistObjects.length;k++) {
                 for(var i=0;i<artists.length;i++) {
                   if(artistObjects[k].id == artists[i].id) {
-                    //movieArtistsFilterData.push(movieFilterData[j]);
-                    //c++;
-                    movieFilterData.push(releasedMoviesList[j]);
-                    //break;
+                    c++;
+                    break;
                   }
                 }
               }
-              // if(c == 0) {
-              //   movieFilterData = moviesList.splice(j, 1);
-              // }
+              if(c != 0) {
+                movieFilterData.push(releasedMoviesList[j]);
+                //movieFilterData = moviesList.splice(j, 1);
+              }
             }
           //movieFilterData = movieList.filter((movie) => artistIds.includes(artists[i].id));
         }
@@ -311,13 +313,6 @@ const Home = (props) => {
       props.history.push({
         pathname: "/movie/" + id
       });
-    }
-
-    const getReleaseDateString = (movie) => {
-      let releaseDateString = movie.release_date;
-      const releaseDateArr = releaseDateString.split("-");
-      const date = new Date(releaseDateArr[0], releaseDateArr[1], releaseDateArr[2]);
-      return date.toDateString();
     }
 
         return (
@@ -360,7 +355,7 @@ const Home = (props) => {
                         {/* onClick={movieClickHandler(movie.id)} */}
                         <ImageListItemBar
                         title={movie.title}
-                        //subtitle={getReleaseDateString}
+                        subtitle={"Release Date: " + new Date((movie.release_date.split("-"))[0], (movie.release_date.split("-"))[1], (movie.release_date.split("-"))[2]).toDateString()}
                         // classes={{
                         //     root: classes.titleBar,
                         //     title: classes.title,
@@ -448,13 +443,13 @@ const Home = (props) => {
                 <br /><br />
                 <FormControl>
                   {/* <InputLabel htmlFor="releaseStartDate">Release Date Start</InputLabel> */}
-                  <TextField label="Release Date Start" id="releaseStartDate" type="date" InputLabelProps={{ shrink: true }} />
+                  <TextField label="Release Date Start" id="releaseStartDate" type="date" value={releaseStartDate} onChange={handleReleaseStartDateChange} InputLabelProps={{ shrink: true }} />
                   {/* <Input id="releaseStartDate" type="date" value={releaseStartDate} onChange={handleReleaseStartDateChange} ></Input> */}
                 </FormControl>
                 <br /><br />
                 <FormControl>
                   {/* <InputLabel htmlFor="releaseEndDate">Release Date End</InputLabel> */}
-                  <TextField label="Release Date End" id="releaseEndDate" type="date" InputLabelProps={{ shrink: true }} />
+                  <TextField label="Release Date End" id="releaseEndDate" type="date" value={releaseEndDate} onChange={handleReleaseEndDateChange} InputLabelProps={{ shrink: true }} />
                   {/* <Input id="releaseEndDate" type="date" value={releaseEndDate} onChange={handleReleaseEndDateChange} ></Input> */}
                   <TextField InputLabelProps={{ shrink: true }} />
                 </FormControl>

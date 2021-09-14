@@ -66,7 +66,7 @@ const Details = (props) => {
             <Header isShowBookShowButton={isShowBookShowButton} movieId={props.match.params.id}/>
             <Typography className="backToHome">
                 <Link to={"/"}>
-                <ArrowBackIosIcon fontSize="small" />
+                <ArrowBackIosIcon className="backIcon" fontSize="small" />
                 Back to home
                 </Link>
             </Typography>
