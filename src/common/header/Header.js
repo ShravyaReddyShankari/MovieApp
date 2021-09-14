@@ -31,7 +31,12 @@ const customStyles = {
   function TabPanel(props) {
     const { children, value, index, ...other } = props;
     return (
-      <div {...other}>
+      <div {...other} 
+    //   role="tabpanel"
+    //   hidden={value !== index}
+    //   id={`a11y-tabpanel-${index}`}
+    //   aria-labelledby={`a11y-tab-${index}`}
+    >
         {value === index && <div>{children}</div>}
       </div>
     );
@@ -120,13 +125,14 @@ const Header = (props) => {
                 <div>I am a modal</div> */}
                 <Paper square>
                     <Tabs
-                        value={0}
-                        indicatorColor="primary"
-                        textColor="primary"
+                        value={value}
+                        indicatorColor="secondary"
+                        textColor="secondary"
                         onChange={handleChange}
                         //aria-label="disabled tabs example"
                         //aria-hide-app="false"
                         //aria-hide-app={false}
+                        //selectionFollowsFocus
                     >
                         <Tab label="LOGIN" >    
                         </Tab>

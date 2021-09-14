@@ -3,6 +3,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
+import './Login.css';
 
 const Login = (props) => {
     const [loginUserForm, setLoginUserForm] = useState({
@@ -58,22 +59,24 @@ const Login = (props) => {
     return (
         <div>
             <FormControl>
-            <InputLabel htmlFor="username">Username</InputLabel>
-            <Input id="username" name="username" value={username} onChange={inputChangedHandler} required></Input>
+            <InputLabel className="login-input" htmlFor="username">Username*</InputLabel>
+            <Input className="login-input" id="username" name="username" value={username} onChange={inputChangedHandler} required></Input>
             {/* <Input id="username" aria-describedby="my-helper-text" /> */}
             {/* <FormHelperText id="my-helper-text">We'll never share your email.</FormHelperText> */}
             </FormControl>
             <br /><br />
             <FormControl>
-            <InputLabel htmlFor="password">Password</InputLabel>
-            <Input id="password" name="password" value={password} onChange={inputChangedHandler} required></Input>
+            <InputLabel className="login-input" htmlFor="password">Password*</InputLabel>
+            <Input className="login-input" id="password" name="password" value={password} onChange={inputChangedHandler} required></Input>
             {/* <Input id="username" aria-describedby="my-helper-text" /> */}
             {/* <FormHelperText id="my-helper-text">We'll never share your email.</FormHelperText> */}
             </FormControl>
             <br /><br />
-            <Button variant="contained" color="primary" onClick={loginUserHandler}>
+            <div className="login-button">
+            <Button type="submit" variant="contained" color="primary" onClick={loginUserHandler}>
                 LOGIN
-            </Button>   
+            </Button> 
+            </div>  
             <br /><br />     
             </div>
     )

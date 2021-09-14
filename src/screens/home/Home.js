@@ -23,7 +23,7 @@ import './Home.css';
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import { MovieCreation } from '@material-ui/icons';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 
 
@@ -309,10 +309,10 @@ const Home = (props) => {
       console.log(releasedMoviesList);
     }
 
+    const history = useHistory();
+
     const movieClickHandler = (id) => {
-      props.history.push({
-        pathname: "/movie/" + id
-      });
+      history.push("/movie/" + id);
     }
 
         return (
@@ -330,15 +330,15 @@ const Home = (props) => {
                     {/* onClick={movieClickHandler(movie.id)} */}
                     <ImageListItemBar
                       title={movie.title}
-                      classes={{
-                        root: classes.titleBar,
-                        title: classes.title
-                      }}
-                      actionIcon={
-                        <IconButton aria-label={`star ${movie.title}`}>
-                          <StarBorderIcon className={classes.title} />
-                        </IconButton>
-                      }
+                      // classes={{
+                      //   root: classes.titleBar,
+                      //   title: classes.title
+                      // }}
+                      // actionIcon={
+                      //   <IconButton aria-label={`star ${movie.title}`}>
+                      //     <StarBorderIcon className={classes.title} />
+                      //   </IconButton>
+                      // }
                     />
                   </ImageListItem>
                 ))}
@@ -349,8 +349,10 @@ const Home = (props) => {
             <ImageList cols={4} rowHeight={350} style={{'height':'auto'}}>
                     {releasedMoviesList.map((movie) => (
                     <ImageListItem key={movie.id}>
-                        <Link to={"/movie/"+movie.id}>
-                        <img src={movie.poster_url} alt={movie.title} />
+                        <Link className="moviePosterImageLink" to={"/movie/"+movie.id}>
+                        {/* <a className="moviePosterImageAnchor" href="#"> */}
+                        <img className="moviePosterImage" src={movie.poster_url} alt={movie.title} />
+                        {/* </a> */}
                         </Link>
                         {/* onClick={movieClickHandler(movie.id)} */}
                         <ImageListItemBar
@@ -451,7 +453,7 @@ const Home = (props) => {
                   {/* <InputLabel htmlFor="releaseEndDate">Release Date End</InputLabel> */}
                   <TextField label="Release Date End" id="releaseEndDate" type="date" value={releaseEndDate} onChange={handleReleaseEndDateChange} InputLabelProps={{ shrink: true }} />
                   {/* <Input id="releaseEndDate" type="date" value={releaseEndDate} onChange={handleReleaseEndDateChange} ></Input> */}
-                  <TextField InputLabelProps={{ shrink: true }} />
+                  {/* <TextField InputLabelProps={{ shrink: true }} /> */}
                 </FormControl>
                 <br /><br />
               </CardContent>

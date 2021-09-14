@@ -19,3 +19,15 @@
     width: 24%;
     margin: 16px;
 }
+
+.moviePosterImageLink {
+    display: block;
+    height: 100%;
+    width: 100%
+  }
+
+.moviePosterImage {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }

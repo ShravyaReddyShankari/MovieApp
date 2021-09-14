@@ -8,14 +8,17 @@
 .movieInfo {
     display: flex;
     flex-direction: row;
+    overflow: visible;
 }
 
 .moviePoster {
     width: 20%;
+    overflow: hidden;
 }
 
 .movieDetails {
     width: 60%;
+    clear: both;
 }
 
 .movieRating {
