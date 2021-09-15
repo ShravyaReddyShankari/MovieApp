@@ -1,16 +1,16 @@
-.subHeader {
+.sub-header {
     background-color: #ff9999;
     padding: 8px;
     text-align: center;
     font-size: 1rem;
 }
 
-.movieFilters {
+.movie-filters {
     display: flex;
     flex-direction: row;
 }
 
-.releasedMovies {
+.released-movies {
     width: 76%;
     margin: 16px;
 }
@@ -20,13 +20,13 @@
     margin: 16px;
 }
 
-.moviePosterImageLink {
+.movie-poster-image-link {
     display: block;
     height: 100%;
     width: 100%
   }
 
-.moviePosterImage {
+.movie-poster-image {
     object-fit: cover;
     width: 100%;
     height: 100%;

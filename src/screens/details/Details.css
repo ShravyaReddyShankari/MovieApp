@@ -1,39 +1,39 @@
-.backToHome {
+.back-to-home {
     margin-left: 24px;
     margin-top: 8px;
     margin-bottom: 0px;
     height: 24px;
 }
 
-.movieInfo {
+.movie-info {
     display: flex;
     flex-direction: row;
     overflow: visible;
 }
 
-.moviePoster {
+.movie-poster {
     width: 20%;
     overflow: hidden;
 }
 
-.movieDetails {
+.movie-details {
     width: 60%;
     clear: both;
 }
 
-.movieRating {
+.movie-rating {
     width: 20%;
 }
 
-.backIcon {
+.back-icon {
     vertical-align: middle
 }
 
-.plotAndTrailer {
+.plot-trailer {
     margin-top: 16px;
 }
 
-.artistsHeading {
+.artists-header {
     margin-top: 16px;
     margin-bottom: 16px;
 }
