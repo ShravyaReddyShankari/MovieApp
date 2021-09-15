@@ -23,7 +23,7 @@ const Register = (props) => {
 
     async function registerUserHandler(newUser) {
         try {
-            const rawResponse = await fetch(props.baseUrl + "signup",
+            const rawResponse = await fetch("/api/v1/signup",
                 {
                     method: "POST",
                     headers: {
