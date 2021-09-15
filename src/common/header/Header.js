@@ -45,27 +45,37 @@ const customStyles = {
 Modal.setAppElement('body')
 
 const Header = (props) => {
-    const [modalIsOpen, setIsOpen] = React.useState(false);
+    const [modalIsOpen, setModalIsOpen] = React.useState(false);
     const isLoggedIn = window.sessionStorage.getItem('access-token') != undefined ? true : false;
     let isShowBookShowButton = false;
     let movieId = '';
+    const [bookShowAlertModalIsOpen, setBookShowAlertModalIsOpen] = React.useState(false);
+
+    const handleBookShowAlertModalOpen = () => {
+        setBookShowAlertModalIsOpen(true);
+    };
+
+    const handleBookShowAlertModalClose = () => {
+        setBookShowAlertModalIsOpen(false);
+    };
+
     if(props.isShowBookShowButton) {
         isShowBookShowButton = props.isShowBookShowButton;
         movieId = props.movieId;
     }
 
     function openModal() {
-        setIsOpen(true);
+        setModalIsOpen(true);
     }
 
-    function afterOpenModal() {
-        // references are now sync'd and can be accessed.
-        //subtitle.style.color = '#f00';
-        let x = true;
-    }
+    // function afterOpenModal() {
+    //     // references are now sync'd and can be accessed.
+    //     //subtitle.style.color = '#f00';
+    //     let x = true;
+    // }
 
     function closeModal() {
-        setIsOpen(false);
+        setModalIsOpen(false);
     }
 
     const history = useHistory();
@@ -78,7 +88,8 @@ const Header = (props) => {
             });
         }
         else {
-            alert("Please Login or Register");
+            //alert("Please Login or Register");
+            handleBookShowAlertModalOpen();
         }
     }
 
@@ -88,7 +99,7 @@ const Header = (props) => {
     };
 
     const handleModalOpenChange = (e, modalIsOpen) => {
-        setIsOpen(modalIsOpen);
+        setModalIsOpen(modalIsOpen);
     }
     
     const logoutHandler = () => {
@@ -111,11 +122,11 @@ const Header = (props) => {
             {/* <ReactLogo /> */}
             {/* <img src="../../assets/logo.svg" onerror="this.src='../../assets/logo.svg'"></img> */}
              {/* <img src="../../assets/logo.svg"></img> */}
-            {isLoggedIn ? ( <Button className="headerButton" variant="contained" onClick={logoutHandler}>LOGOUT</Button> ) : 
-            ( <Button className="headerButton" variant="contained" onClick={openModal}>LOGIN</Button> )}
+            {isLoggedIn ? ( <Button className="header-button" variant="contained" color="default" onClick={logoutHandler}>LOGOUT</Button> ) : 
+            ( <Button className="header-button" variant="contained" color="default" onClick={openModal}>LOGIN</Button> )}
             <Modal
                 isOpen={modalIsOpen}
-                onAfterOpen={afterOpenModal}
+                //onAfterOpen={afterOpenModal}
                 onRequestClose={closeModal}
                 style={customStyles}
                 //contentLabel="Example Modal"
@@ -148,12 +159,23 @@ const Header = (props) => {
                 </Paper>
             </Modal>
             {isShowBookShowButton ? (
-            // <Link to={"/bookshow/" + movieId}>
-            <Button className="headerButton" variant="contained" color="primary" onClick={bookShowButtonClickHandler}>
-                BOOK SHOW 
-            </Button>
-            // </Link>
+                // isLoggedIn ?
+                //     (<Link to={"/bookshow/" + movieId}>
+                        <Button className="header-button" variant="contained" color="primary" onClick={bookShowButtonClickHandler}>
+                            BOOK SHOW 
+                        </Button>
+                    // </Link>
+                    // ) :
             ) : ''}
+            <Modal
+                isOpen={bookShowAlertModalIsOpen}
+                onRequestClose={handleBookShowAlertModalClose}
+                style={customStyles}
+            >
+                <div>
+                    <p>Please Login or Register!</p>
+                </div>
+            </Modal>
         </div>
     )
 }

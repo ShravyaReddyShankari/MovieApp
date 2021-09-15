@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
     root: {
       minWidth: 240,
       maxWidth: 240,
-      //margin: theme.spacing.unit
+      margin: theme.spacing(1)
     },
     bullet: {
       display: 'inline-block',
@@ -64,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
       transform: 'scale(0.8)',
     },
     title: {
-      fontSize: 14,
+      //fontSize: 14,
       color: theme.palette.primary.light
     },
     pos: {
@@ -375,15 +375,15 @@ const Home = (props) => {
             <div className="filters">
             <Card>
               <CardContent>
-                <Typography className={classesFilter.title} gutterBottom>
+                <Typography className={classesFilter.root} className={classesFilter.title}>
                   FIND MOVIES BY:
                 </Typography>
-                <FormControl>
+                <FormControl className={classesFilter.root}>
                   <InputLabel htmlFor="movieName">Movie Name</InputLabel>
                   <Input id="movieName" value={movieName} onChange={handleMovieNameChange}></Input>
                 </FormControl>
                 <br /><br />
-                <FormControl className={classesFilter.formControl}>
+                <FormControl className={classesFilter.root}>
                   <InputLabel htmlFor="genres">Genres</InputLabel>
                   <Select
                     labelId="genres-select-label"
@@ -414,7 +414,7 @@ const Home = (props) => {
                   </Select>
                 </FormControl>
                 <br /><br />
-                <FormControl className={classesFilter.formControl}>
+                <FormControl className={classesFilter.root}>
                   <InputLabel htmlFor="artists">Artists</InputLabel>
                   <Select
                     labelId="artists-select-label"
@@ -443,13 +443,13 @@ const Home = (props) => {
                   </Select>
                 </FormControl>
                 <br /><br />
-                <FormControl>
+                <FormControl className={classesFilter.root}>
                   {/* <InputLabel htmlFor="releaseStartDate">Release Date Start</InputLabel> */}
                   <TextField label="Release Date Start" id="releaseStartDate" type="date" value={releaseStartDate} onChange={handleReleaseStartDateChange} InputLabelProps={{ shrink: true }} />
                   {/* <Input id="releaseStartDate" type="date" value={releaseStartDate} onChange={handleReleaseStartDateChange} ></Input> */}
                 </FormControl>
                 <br /><br />
-                <FormControl>
+                <FormControl className={classesFilter.root}>
                   {/* <InputLabel htmlFor="releaseEndDate">Release Date End</InputLabel> */}
                   <TextField label="Release Date End" id="releaseEndDate" type="date" value={releaseEndDate} onChange={handleReleaseEndDateChange} InputLabelProps={{ shrink: true }} />
                   {/* <Input id="releaseEndDate" type="date" value={releaseEndDate} onChange={handleReleaseEndDateChange} ></Input> */}
@@ -458,7 +458,7 @@ const Home = (props) => {
                 <br /><br />
               </CardContent>
               <CardActions>
-                <Button variant="contained" color="primary" onClick={applyFiltersHandler}>APPLY</Button>
+                <Button className={classesFilter.root} variant="contained" color="primary" onClick={applyFiltersHandler}>APPLY</Button>
               </CardActions>
             </Card>
             </div>

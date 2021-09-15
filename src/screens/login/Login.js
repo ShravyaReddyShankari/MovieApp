@@ -67,7 +67,7 @@ const Login = (props) => {
             <br /><br />
             <FormControl>
             <InputLabel className="login-input" htmlFor="password">Password*</InputLabel>
-            <Input className="login-input" id="password" name="password" value={password} onChange={inputChangedHandler} required></Input>
+            <Input className="login-input" id="password" name="password" value={password} type="password" onChange={inputChangedHandler} required></Input>
             {/* <Input id="username" aria-describedby="my-helper-text" /> */}
             {/* <FormHelperText id="my-helper-text">We'll never share your email.</FormHelperText> */}
             </FormControl>

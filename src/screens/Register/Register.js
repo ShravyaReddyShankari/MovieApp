@@ -15,6 +15,8 @@ const Register = (props) => {
       });
 
     const {email_address, first_name, last_name, mobile_number, password} = registerUserForm;
+    //const [isRegistrationSuccessful, setIsRegistrationSuccessful] = useState(false);
+    const [registrationMessage, setRegistrationMessage] = useState('');
 
     //const history = useHistory();
 
@@ -32,24 +34,48 @@ const Register = (props) => {
         setregisterUserForm({...state});
     }
     async function registerUserHandler(newUser) {
-        const rawResponse = await fetch("/api/v1/signup", 
-        {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json',
-            "Cache-Control": "no-cache"
-        },
-        body: JSON.stringify(newUser)
-        });
-        const data = await rawResponse.json();
-        console.log(data);
+        try {
+            const rawResponse = await fetch("/api/v1/signup", 
+            {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                "Cache-Control": "no-cache"
+            },
+            body: JSON.stringify(newUser)
+            });
+            //const data = await rawResponse.json();
+            //console.log(data);
+            if(rawResponse.ok) {
+                const data = await rawResponse.json();
+                console.log(data);
+                // resolve(data);
+                if(data.message === undefined) {
+                    //setIsRegistrationSuccessful(true);
+                    setRegistrationMessage('Registration Successful. Please Login!');
+                }
+                else {
+                    setRegistrationMessage(data.message);
+                }
+            } 
+            else {
+                const error = new Error();
+                error.message = 'Something went wrong.';
+                throw error;
+            }
+        }
+        catch(e) {
+            console.log(e);
+        }
+    
     }
 
     const onFormSubmitted = (e) => {
         e.preventDefault();
         registerUserHandler(registerUserForm);
-        const modalIsOpenVar = false;
-        props.onChange(e, modalIsOpenVar);
+        //const modalIsOpenVar = false;
+        //props.onChange(e, modalIsOpenVar);
+        
         //setregisterUserForm({id: 0, name: '', phone: ''});
         //history.push("/");
     }
@@ -92,15 +118,15 @@ const Register = (props) => {
                     onChange={inputChangedHandler} 
                     required
                     value={email_address}
-                    validators={["required"]}
-                    errorMessages={["required"]}
+                    validators={["required", "isEmail"]}
+                    errorMessages={["required", "invalid email"]}
                 >
                 </TextValidator>
                 <br /><br />
                 <TextValidator
                     id="password" 
                     label="Password" 
-                    type="text" 
+                    type="password" 
                     name="password" 
                     onChange={inputChangedHandler} 
                     required
@@ -123,6 +149,9 @@ const Register = (props) => {
                 >
                 </TextValidator>
                 <br /><br />
+                {/* {isRegistrationSuccessful ?  */}
+                <p>{registrationMessage}</p>
+                 {/* : ''} */}
                 {/* <button type="submit" className="custom-btn add-btn">REGISTER</button> */}
                 <Button type="submit" className="register-button" variant="contained" color="primary">
                     REGISTER

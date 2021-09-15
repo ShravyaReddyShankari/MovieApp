@@ -10,13 +10,19 @@ import ImageListItemBar from '@mui/material/ImageListItemBar';
 import { Link } from "react-router-dom";
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import './Details.css';
+import { makeStyles } from "@material-ui/core/styles";
 
 
-
+const useStyles = makeStyles((theme) => ({
+    emptyStar: {
+      color: "black"
+    }
+  }));
 
 
 
 const Details = (props) => {
+    const classes = useStyles();
     const [movie, setMovie] = useState({});
     const [artistsData, setArtistsData] = useState([]);
     const [releaseDate, setReleaseDate] = useState('');
@@ -92,10 +98,14 @@ const Details = (props) => {
                 <Typography>
                    <b>Rating:</b> {movie.censor_board_rating}
                 </Typography>
-                <Typography style={{'marginTop': '16px'}}>
+                <div className="plotAndTrailer">
+                <Typography>
                    <b>Plot:</b> {movie.storyline} {movie.wiki_url}
                 </Typography>
-                <Typography style={{'marginTop':'16px'}}>
+                </div>
+                <div className="plotAndTrailer">
+                <Typography>
+                {/* style={{'marginTop':'16px'}} */}
                    <b>Trailer:</b>  
                 </Typography>
                 <YouTube 
@@ -103,6 +113,7 @@ const Details = (props) => {
                     //opts={opts}
                     //host='https://www.youtube.com'
                 />
+                </div>
             </div>
             <div className="movieRating">
                 <Typography>
@@ -112,11 +123,13 @@ const Details = (props) => {
                     name="customized-empty"
                     defaultValue={0}
                     precision={1}
-                    emptyIcon={<StarBorderIcon fontSize="inherit" />}
+                    emptyIcon={<StarBorderIcon fontSize="inherit" className={classes.emptyStar} />}
                 />
-                <Typography style={{'marginTop':'16px', 'marginBottom':'16px'}}>
+                <div className="artistsHeading">
+                <Typography>
                     <b>Artists:</b>
                 </Typography>
+                </div>
                 <ImageList cols={2}>
                 {artistsData.map((artist) => (
                 <ImageListItem key={artist.profile_url}>
